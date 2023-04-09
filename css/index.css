@@ -136,7 +136,7 @@ body {
 	border-color: #ff8c61dd !important;	
 	--bs-btn-bg: #ff8c61dd !important;	
 	--bs-btn-hover-bg: #ff8c61dd !important;	
-	--bs-btn-active-border-color: #ff8c61dd !important;	
+	--bs-btn-active-bg-color: #ff8c61dd !important;	
 	--bs-btn-active-border-color: #ff8c61dd !important;	
 }
 .btn-icon-action:not(.active):active,
@@ -195,7 +195,6 @@ body {
 	display: inline-flex;
 	place-items: center;
 	place-content: center;
-	font-size: 60px;
 	font-weight: bold;
 }
 .ballot-card-paper-back {

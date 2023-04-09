@@ -281,6 +281,7 @@ const generateRaffle = () => {
 		
 		// add text
 		front.innerText = label
+		front.style.fontSize = (holder.paperWidthHeight - 50) + 'px'
 
 		// adjust paper properties
 		paper.style.maxWidth = holder.paperWidthHeight + 'px'
