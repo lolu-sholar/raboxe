@@ -1,0 +1,208 @@
+* {
+	font-family: 'Righteous', 'Comic Sans MS', cursive;
+}
+body {
+	margin: 0;
+	padding: 0;
+	background-image: url('../images/6.jpg');
+	background-size: cover;
+	background-position: center center;
+}
+.overlay {
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	left: 0;
+	background-color: #ffffff99;
+}
+.place-all-center {
+	place-items: center;
+	place-content: center;
+}
+.raffle-container {
+	width: 100%;
+	height: 100%;
+	min-height: 100vh;
+	background-color: #ff707055;
+	position: relative;
+	z-index: 10;
+}
+.app-name {
+	font-family: 'Fruktur', cursive;
+}
+#raffleBoxWrapper {
+	width: 100%;
+	max-width: 500px;
+	min-height: 150px;
+	position: relative;
+	margin: 40px;
+}
+#raffleBox {
+	width: 100%;
+	max-width: 500px;
+	min-height: 150px;
+	background-color: #fff;
+	box-shadow: 0 0 0px 20px #ffffff99;
+	border-radius: 3px;
+	position: relative;
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+#raffleBox .scrollbar-thumb,
+#raffleBox .scrollbar-track-y {
+	width: 3px;
+}
+#raffleBox .scrollbar-thumb {
+	background: #ff8c6177;
+}
+/* Hide scrollbar for Chrome, Safari and Opera */
+#raffleBox::-webkit-scrollbar {
+  display: none;
+}
+/* Hide scrollbar for IE, Edge and Firefox */
+#raffleBox {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+#raffleBox::-webkit-scrollbar {
+	/* for Mac OS X support */
+  /* width: 0; */
+}
+/* width */
+#raffleBox::-webkit-scrollbar {
+  width: 8px;
+}
+
+
+/* Custom scrollbar */
+/* Track */
+#raffleBox::-webkit-scrollbar-track {
+  background: #fafafa;
+}
+/* Handle */
+#raffleBox::-webkit-scrollbar-thumb {
+  background: #ff8c6177;
+}
+/* Handle on hover */
+#raffleBox::-webkit-scrollbar-thumb:hover {
+  background: #ff8c61aa;
+}
+
+
+#raffle-box-intro img {
+	height: 150px;
+}
+#raffleTopPane {
+	position: absolute;
+	top: 0;
+	width: 100%;
+	height: 70px;
+	background-color: #ffffff99;
+	z-index: 30;
+}
+#raffleBottomPane {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	height: 70px;
+	background-color: #ffffff99;
+	z-index: 30;
+}
+.btn-icon-action {
+	border: 1px solid #f0f0f0;
+	border-radius: 100%;
+	background: #f5f5f5;
+	width: 55px;
+	height: 55px;
+	margin-left: 7px;
+	margin-right: 7px;
+}
+.btn-icon-action.active,
+.btn-native {
+	background-color: #ff8c61;
+	border-color: #ff8c61;
+	color: #fff;
+}
+.btn-icon-action.active:active,
+.btn-icon-action.active:focus,
+.btn-icon-action.active:focus-visible,
+.btn-icon-action.active:hover,
+.btn-native:active,
+.btn-native:focus,
+.btn-native:focus-visible,
+.btn-native:hover {
+	background-color: #ff8c61dd !important;
+	border-color: #ff8c61dd !important;	
+}
+.btn-icon-action:not(.active):active,
+.btn-icon-action:not(.active):focus,
+.btn-icon-action:not(.active):focus-visible,
+.btn-icon-action:not(.active):hover,
+.btn-native-light:active,
+.btn-native-light:focus,
+.btn-native-light:focus-visible,
+.btn-native-light:hover {
+	background-color: #eeeeeeaa !important;
+	border-color: #eeeeeeaa !important;	
+}
+.form-control:focus,
+.form-control:focus-visible{
+	border-color: #ff8c61;
+	outline: none;
+	box-shadow: none;
+	transition: .3s;
+}
+.toast {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	z-index: 2000;
+}
+.toast-body {
+	font-size: 1.08rem;
+}
+.ballot-card-paper {
+	width: 100%;
+	height: 100vh;
+	display: inline-flex;
+	margin: 10px;
+	position: absolute;
+	box-sizing: border-box;
+	background-color: #ff8c61;
+	perspective: 1000px;s
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+  -moz-transform-style: preserve-3d;
+  border: 2px solid #ff8c61;
+  border-radius: 5px;
+}
+.ballot-card-paper-wrapper {
+	position: relative;
+	width: 100%;
+	height: 100%;
+  backface-visibility: hidden;
+}
+.ballot-card-paper-front {
+	background-color: #ff8c61;
+	color: #fff;
+	display: inline-flex;
+	place-items: center;
+	place-content: center;
+	font-size: 60px;
+	font-weight: bold;
+}
+.ballot-card-paper-back {
+	background-color: #333;
+}
+.ballot-card-paper-front,
+.ballot-card-paper-back {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+}
+.all-white-text .ballot-card-paper:not(.revealed):hover {
+	cursor: pointer;
+	background-color: #ff8c61aa;
+	/* transition: .3s; */
+}
