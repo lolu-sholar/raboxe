@@ -33,14 +33,14 @@ body {
 }
 #raffleBoxWrapper {
 	width: 100%;
-	max-width: 600px;
+	max-width: 750px;
 	min-height: 150px;
 	position: relative;
 	margin: 40px;
 }
 #raffleBox {
 	width: 100%;
-	max-width: 600px;
+	max-width: 750px;
 	min-height: 150px;
 	background-color: #fff;
 	box-shadow: 0 0 0px 20px #ffffff99;
@@ -134,7 +134,9 @@ body {
 .btn-native:hover {
 	background-color: #ff8c61dd !important;
 	border-color: #ff8c61dd !important;	
-	--bs-btn-active-bg: #ff8c61dd !important;	
+	--bs-btn-bg: #ff8c61dd !important;	
+	--bs-btn-hover-bg: #ff8c61dd !important;	
+	--bs-btn-active-border-color: #ff8c61dd !important;	
 	--bs-btn-active-border-color: #ff8c61dd !important;	
 }
 .btn-icon-action:not(.active):active,
