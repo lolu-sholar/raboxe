@@ -2,8 +2,9 @@
 let toastErrorBootstrap = null
 let Scrollbar = window.Scrollbar;
 let startScreen = true
-
-// define toast error
+let windowWidth = document.documentElement.clientWidth
+let targets = 'div#raffleBox .ballot-card-paper'
+let holder = {}
 const toastError = document.getElementById('toastError')
 
 // check if element is valid
@@ -12,16 +13,12 @@ if (toastError) {
   toastErrorBootstrap = bootstrap.Toast.getOrCreateInstance(toastError)
 }
 
-// define targets
-let targets = 'div#raffleBox .ballot-card-paper'
-// define monitor to follow y axis spacings
-let holder = {}
-
 // initialize
 let init = function (){
 	// define holder
 	holder = {
 		yAxisMonitor: 0,
+		yAxisRowMonitor: 1,
 		yAxisSpacing: 0,
 		pointsMap: new Map(),
 		shuffledIndices: [],
@@ -80,6 +77,7 @@ let revealPaperContent = function(e) {
 let blink = function(){
 	// shuffle
 	shuffleFisherYates()
+
 	// animation to shuffle papers fast
 	let fastShuffle = anime({
 		targets,
@@ -160,10 +158,15 @@ let stackUpPapers = function() {
 				// reset monitor
 				holder.yAxisMonitor = 0
 				// set addtional point
-				holder.yAxisSpacing += (holder.spacingY - holder.distanceBetweenCards)
+				holder.yAxisSpacing += holder.spacingY
+				// increase the row
+				holder.yAxisRowMonitor++
 			}
 			// increase axis monitor
 			holder.yAxisMonitor++
+
+			// set the row
+			el.setAttribute('data-y-row', holder.yAxisRowMonitor)
 
 			// get data
 			let data = holder.pointsMap.get(el.getAttribute('data-i'))
@@ -242,10 +245,10 @@ const generateRaffle = () => {
 	holder.distanceBetweenCards = ((raffleBoxProperties.width - (holder.paperWidthHeight * 2)) / 3) - 10
 	
 	// get spacing
-	let spacing = holder.paperWidthHeight + (holder.distanceBetweenCards * 2) + 10
+	let spacing = holder.paperWidthHeight + holder.distanceBetweenCards
 	
 	// get x & y axis spacings
-	holder.spacingX = spacing
+	holder.spacingX = spacing + holder.distanceBetweenCards
 	holder.spacingY = spacing
 	holder.yAxisSpacing = holder.distanceBetweenCards
 
@@ -321,19 +324,9 @@ const toggleModal = (mode = 'show') => {
 }
 
 // reset view
-const resetView = (showResizeInfo = false) => {
+const resetView = () => {
 	// check shadow contains content
 	if (raffleBoxShadow.childNodes.length) {
-		// check if to show resize
-		if (showResizeInfo) {
-			// remove error class
-			toastError.classList.remove('text-bg-danger')
-			// add info class
-			toastError.classList.add('text-bg-info')
-			// show error info
-			showError(`A change in your device's view has been detected! Please start again.<br><br>NOTE* In future updates, this would not pose any problems.`, false)
-		}
-
 		// hide panes
 		raffleTopPane.style.setProperty('display', 'none', 'important')
 		raffleBottomPane.style.setProperty('display', 'none', 'important')
@@ -398,8 +391,93 @@ const showError = (message = '', error = true) => {
 	return
 }
 
+// readjust generated raffle papers
+const readjustRafflePapers = () => {
+	// get number of players
+	let players = noOfPlayers.value
+
+	// get box size
+	let raffleBoxProperties = {
+		width: raffleBox.clientWidth,
+		children: Math.ceil(players / 2)
+	}
+
+	// get width for paper
+	holder.paperWidthHeight = (raffleBoxProperties.width / 2) - 50
+	// get distance between cards 
+	holder.distanceBetweenCards = ((raffleBoxProperties.width - (holder.paperWidthHeight * 2)) / 3) - 10
+	
+	// get spacing
+	let spacing = holder.paperWidthHeight + holder.distanceBetweenCards
+	
+	// get x & y axis spacings
+	holder.spacingX = spacing + holder.distanceBetweenCards
+	holder.spacingY = spacing
+	holder.yAxisSpacing = holder.distanceBetweenCards
+
+	// paddings
+	let paddings = {
+		top: (raffleTopPane.clientHeight - holder.distanceBetweenCards),
+		bottom: ((holder.distanceBetweenCards + 10) + raffleTopPane.clientHeight),
+	}
+
+	// loop through
+	Array.from(document.querySelectorAll(targets)).forEach(el => {
+		// adjust paper properties
+		el.style.maxWidth = holder.paperWidthHeight + 'px'
+		el.style.maxHeight = holder.paperWidthHeight + 'px'
+		el.querySelector('.ballot-card-paper-front').style.fontSize = (holder.paperWidthHeight - 50) + 'px'
+
+		// get transform property
+		let transform = el.style.transform
+
+		// get element index id
+		let indexId = el.getAttribute('data-i'),
+				index = indexId - 1
+
+		// get key
+		let misplacedKey = holder.shuffledIndices[index]
+		// get data by misplaced key
+		let data = holder.pointsMap.get(misplacedKey)
+
+		// define new transforms
+		let translateXNew = '',
+				translateYNew = '',
+				yAxisRowId = Math.ceil(Number(misplacedKey) / 2)
+
+		// check if element is even
+		if ((Number(misplacedKey) % 2) < 1) {
+			// get new x spacing
+			translateXNew = `translateX(${holder.spacingX}px)`
+		} else {
+			// get new x spacing
+			translateXNew = `translateX(${holder.distanceBetweenCards}px)`
+		}
+
+		// check if first row or not
+		if (yAxisRowId < 2) {
+			// get new y spacing
+			translateYNew = `translateY(${holder.distanceBetweenCards}px)`
+		} else {
+			// set addtional point
+			holder.yAxisSpacing = ((holder.spacingY) * (yAxisRowId - 1)) + holder.distanceBetweenCards
+			// get new y spacing
+			translateYNew = `translateY(${holder.yAxisSpacing}px)`
+		}
+
+		// replace old x spacing with new one
+		el.style.transform = transform.replace(/translateX\([\w|\w.]*\)/g, translateXNew)
+																	.replace(/translateY\([\w|\w.]*\)/g, translateYNew)
+	})
+}
+
 // window on resize
 window.onresize = () => {
-	// reset view
-	resetView(true)
+	// get width
+	let width = document.documentElement.clientWidth
+	// check if widths differ
+	if ((width != windowWidth) && !startScreen) {
+		// readjust papers
+		readjustRafflePapers()
+	}
 }

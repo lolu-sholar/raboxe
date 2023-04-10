@@ -211,3 +211,24 @@ body {
 	background-color: #ff8c61aa;
 	/* transition: .3s; */
 }
+
+
+@media (max-width: 450px) {
+	.overlay {
+		background-color: #ffffffbb;
+	}
+	#raffleBox {
+		box-shadow: none !important;
+	}	
+}
+@media (max-width: 372px) {
+	#raffleBoxWrapper {
+		max-width: 100%;
+		margin: 0;
+		height: 100vh;
+	}
+	#raffleBox {
+		height: 100%;
+		background-color: #ffffff99;
+	}
+}
