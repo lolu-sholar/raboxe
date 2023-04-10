@@ -127,6 +127,9 @@ let blink = function(){
 				raffleBottomPane.style.setProperty('display', 'flex', 'important')
 			}
 
+			// readjust views
+			readjustRafflePapers()
+
 			// increase
 			holder.blinkTimes++
 		}
@@ -415,12 +418,6 @@ const readjustRafflePapers = () => {
 	holder.spacingY = spacing
 	holder.yAxisSpacing = holder.distanceBetweenCards
 
-	// paddings
-	let paddings = {
-		top: (raffleTopPane.clientHeight - holder.distanceBetweenCards),
-		bottom: ((holder.distanceBetweenCards + 10) + raffleTopPane.clientHeight),
-	}
-
 	// loop through
 	Array.from(document.querySelectorAll(targets)).forEach(el => {
 		// adjust paper properties
@@ -441,33 +438,43 @@ const readjustRafflePapers = () => {
 		let data = holder.pointsMap.get(misplacedKey)
 
 		// define new transforms
-		let translateXNew = '',
-				translateYNew = '',
+		let translateXNew = 0,
+				translateYNew = 0,
 				yAxisRowId = Math.ceil(Number(misplacedKey) / 2)
 
 		// check if element is even
 		if ((Number(misplacedKey) % 2) < 1) {
 			// get new x spacing
-			translateXNew = `translateX(${holder.spacingX}px)`
+			translateXNew = holder.spacingX
 		} else {
 			// get new x spacing
-			translateXNew = `translateX(${holder.distanceBetweenCards}px)`
+			translateXNew = holder.distanceBetweenCards
 		}
 
 		// check if first row or not
 		if (yAxisRowId < 2) {
 			// get new y spacing
-			translateYNew = `translateY(${holder.distanceBetweenCards}px)`
+			translateYNew = holder.distanceBetweenCards
 		} else {
 			// set addtional point
 			holder.yAxisSpacing = ((holder.spacingY) * (yAxisRowId - 1)) + holder.distanceBetweenCards
 			// get new y spacing
-			translateYNew = `translateY(${holder.yAxisSpacing}px)`
+			translateYNew = holder.yAxisSpacing
 		}
 
-		// replace old x spacing with new one
-		el.style.transform = transform.replace(/translateX\([\w|\w.]*\)/g, translateXNew)
-																	.replace(/translateY\([\w|\w.]*\)/g, translateYNew)
+		// readjust views with by animation
+		readjustmentAnimation(el, translateXNew, translateYNew)
+	})
+}
+
+// create animation for readjustment
+let readjustmentAnimation = function (targets, x, y) {
+	// create animation
+	anime({
+		targets,
+		translateX: x,
+		translateY: y,
+		duration: 100
 	})
 }
 
@@ -480,4 +487,13 @@ window.onresize = () => {
 		// readjust papers
 		readjustRafflePapers()
 	}
+
+	// check width if small screen size
+	if (width <= 372) {
+		// check if in long mode 
+		if (raffleBox.style.height == '90vh') {
+			// adjust height
+			raffleBox.style.height = '100vh'
+		}
+	} else raffleBox.style.height = '90vh'
 }
